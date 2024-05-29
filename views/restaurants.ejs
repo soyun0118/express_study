@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('includes/head') %>
+    <link rel="stylesheet" href="styles/restaurants.css"/>
+  </head>
+  <body>
+    <%- include('includes/header') %>
+    <%- include('includes/side-drawer') %>
+    <main>
+      <h1>Recommended restaurants</h1>
+      <% if (numberOfRestaurants === 0) { %>
+        <p>We have no restaurants yet!</p>
+      <% } else { %>
+        <p>Find your next favorite restaurants with help of our other users!</p>
+        <p>We found <%= numberOfRestaurants %> restaurants.</p>
+        <ul id="restaurants-list">
+          <% for (const restaurant of restaurants) { %>
+            <%- include('includes/restaurants/restaurant-item', {restaurant: restaurant}) %>
+            // 여기 있던 동적 내용을 include 파일로 연결시키려면, 
+            // 해당 파일로 동적 데이터를 생성하기 위한 키를 전달해줘야 한다.
+            // 그것이 {restaurant: restaurant} 인데,
+            // 첫번째는 include 파일에서 동적데이터 생성에 사용하고 있는 키의 이름
+            // 두번째는 const restaurant 에서 정의한 상수를 말하는 것
+          <% } %>
+        </ul>
+      <% } %>  
+    </main>
+  </body>
+</html>
