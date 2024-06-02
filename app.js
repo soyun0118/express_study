@@ -50,6 +50,15 @@ app.get('/restaurants', function(req, res) {
   });
 });
 
+// 동적 경로: restaruants/r1 주소를 사용해 id가 r1인 값에 접근한다
+app.get('/restaurants/:id', function(req, res) {
+  // params는 데이터에 접근하기 위한 키 - 사용하려면 json의 데이터도 id를 가지도록
+  // id는 내가 id를 키로 사용했기 때문
+  const restaurantId = req.params.id;
+  // 상세 페이지를 렌더링할때 레스토랑 id를 전달, 템플릿에서 사용할 수 있도록 한다
+  res.render('restaurant-details', { rid: restaurantId});
+});
+
 app.get('/about', function(req, res) {
   res.render('about');
 });
@@ -81,7 +90,6 @@ app.post('/recommend', function (req, res) {
   storedRestaurants.push(restaurant);
   // 데이터가 추가된 배열을 다시 텍스트로 저장
   fs.writeFileSync(filePath, JSON.stringify(storedRestaurants));
-
   // 데이터가 제출되면 사용자를 다른 곳으로 보내기
   res.redirect('/confirm');
 });
