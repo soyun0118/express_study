@@ -56,7 +56,22 @@ app.get('/restaurants/:id', function(req, res) {
   // id는 내가 id를 키로 사용했기 때문
   const restaurantId = req.params.id;
   // 상세 페이지를 렌더링할때 레스토랑 id를 전달, 템플릿에서 사용할 수 있도록 한다
-  res.render('restaurant-details', { rid: restaurantId});
+
+  // 일치하는 id를 찾았다면 더 찾지 않고 저장된 데이터로 응답
+  const filePath = path.join(__dirname, 'data', 'restaurants.json');
+  const fileData = fs.readFileSync(filePath);
+  const storedRestaurants = JSON.parse(fileData);
+
+  for (const restaurant of storedRestaurants) {
+    // 레스토랑의 id가 내가 지정한 const restaurantId와 일치한다면
+    if (restaurant.id === restaurantId) {
+      // 일치하는 레스토랑 디테일 페이지를 렌더링하고 끝냄
+      // return을 사용하면 응답을 보낸 뒤의 코드는 실행되지 않음
+      return res.render('restaurant-details', {restaurant: restaurant});
+      // 앞의 restaurant: 템플릿 에서 지정한 키 이름, 
+      // 뒤의 restaurant는 for문 안에서 const 지정한 것 = URL 에서 찾으려는 id와 일치하는 값
+    }
+  }
 });
 
 app.get('/about', function(req, res) {

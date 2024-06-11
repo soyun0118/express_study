@@ -9,10 +9,10 @@
     <%- include('includes/side-drawer') %>
     <main>
       <!-- rid 는 url에서 입력된 동적 경로 매개변수 -->
-      <h1>TITLE OF THE RESTAURANT <%= rid %></h1>
-      <P>Cuisine | Address</P>
-      <p>Description of the restaurant</p>
-      <p><a href="">View Website</a></p>
+      <h1><%= restaurant.name %></h1>
+      <P><%= restaurant.cuisine %> | <%= restaurant.address %></P>
+      <p><%= restaurant.description %></p>
+      <p><a href="<%= restaurant.website %>">View Website</a></p>
     </main>
   </body>
 </html>
