@@ -71,6 +71,9 @@ app.get('/restaurants/:id', function(req, res) {
       // 앞의 restaurant: 템플릿 에서 지정한 키 이름, 
       // 뒤의 restaurant는 for문 안에서 const 지정한 것 = URL 에서 찾으려는 id와 일치하는 값
     }
+
+    // 모든 id를 검토하고 기다려도 매칭이 없다면, 404에러 띄우기
+   res.render('404'); // 사용하는 동적 데이터는 없으므로 전달하는 데이터 없음.
   }
 });
 
