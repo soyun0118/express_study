@@ -112,8 +112,11 @@ app.post('/recommend', function (req, res) {
   res.redirect('/confirm');
 });
 
+// 이때까지 처리되지 않은 모든 요청을 처리하는 미들웨어
+app.use(function(req, res) {
+  res.render('404');
+});
+
 // listen() 으로 특정 포트에서 들어오는 네트워크 트래픽 요청을 수신.
 app.listen(3000);
-
-
 
