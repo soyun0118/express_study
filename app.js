@@ -117,6 +117,13 @@ app.use(function(req, res) {
   res.render('404');
 });
 
+// 서버 측 오류에 대한 500.ejs 페이지
+// 이 때는 Express에게 특별한 에러 상황임을 알려야 하므로,
+// 4개의 매개변수가 사용된다
+app.use(function(error, req, res, next) {
+  res.render('500');
+});
+
 // listen() 으로 특정 포트에서 들어오는 네트워크 트래픽 요청을 수신.
 app.listen(3000);
 
