@@ -8,6 +8,9 @@ const fs = require('fs');
 // require() 으로 express 불러와 상수 또는 변수에 저장
 const express = require('express');
 
+// 리펙토링한 js 파일 불러오기 (다른 require 아래에)
+const resData = require('./utility/restaurant-data');  // 확장자는 안써도 됨
+
 // express는 실행할 수 있는 함수. 호출해준다
 const app = express();
 
@@ -58,9 +61,7 @@ app.get('/restaurants/:id', function(req, res) {
   // 상세 페이지를 렌더링할때 레스토랑 id를 전달, 템플릿에서 사용할 수 있도록 한다
 
   // 일치하는 id를 찾았다면 더 찾지 않고 저장된 데이터로 응답
-  const filePath = path.join(__dirname, 'data', 'restaurants.json');
-  const fileData = fs.readFileSync(filePath);
-  const storedRestaurants = JSON.parse(fileData);
+  const storedRestaurants = Data.getStoredRestaurants();
 
   for (const restaurant of storedRestaurants) {
     // 레스토랑의 id가 내가 지정한 const restaurantId와 일치한다면
@@ -96,18 +97,13 @@ app.get('/recommend', function(req, res) {
 app.post('/recommend', function (req, res) {
   // 레스토랑에 대한 데이터를 추출하고
   const restaurant = req.body;
-  // restaurants.json 파일을 열어서
-  const filePath = path.join(__dirname, 'data', 'restaurants.json');
-  
-  // 파일 시스템을 이용해 읽은 내용을
-  const fileData = fs.readFileSync(filePath);
-  // 텍스트인 JSON 파일에서 자바스크립트 배열로 변환
-  const storedRestaurants = JSON.parse(fileData);
+  // json파일 저장된 리스트 불러오는 함수 호출
+  const storedRestaurants = resData.getStoredRestaurants();
 
   // 배열에 새로운 데이터를 추가한다
   storedRestaurants.push(restaurant);
-  // 데이터가 추가된 배열을 다시 텍스트로 저장
-  fs.writeFileSync(filePath, JSON.stringify(storedRestaurants));
+  // 데이터 저장하는 함수를 호출, 업데이트된 데이터 전달하기
+  resData.storeRestaurants(storedRestaurants);
   // 데이터가 제출되면 사용자를 다른 곳으로 보내기
   res.redirect('/confirm');
 });
