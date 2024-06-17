@@ -6,6 +6,16 @@ const router = express.Router();
 router.get('/restaurants', function(req, res) {
   const storedRestaurants = resData.getStoredRestaurants();
 
+  // 이름 긴 순서대로 데이터 순서 정렬하기
+  storedRestaurants.sort(function(resA, resB) {
+    // 두 개의 레스토랑 이름을 비교해
+    // a가 더 길다면 1, 아니라면 -1값을 반환 - 이걸로 순서를 바꾼다
+    if (resA.name > resB.name) {
+      return 1
+    }
+    return -1
+  });
+
   res.render('restaurants', { 
     numberOfRestaurants: storedRestaurants.length, 
     restaurants: storedRestaurants 
