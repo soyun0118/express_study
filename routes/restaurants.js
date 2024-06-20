@@ -4,13 +4,28 @@ const resData = require('../utility/restaurant-data');
 const router = express.Router();
 
 router.get('/restaurants', function(req, res) {
+  let order = req.query.order;
+  let nextOrder = 'desc';
+
+  if (order !== 'asc' && order !== 'desc') {
+    order = 'asc';
+  }
+
+  if (order === 'desc') {
+    nextOrder = 'asc';
+  }
+
   const storedRestaurants = resData.getStoredRestaurants();
 
-  // 이름 긴 순서대로 데이터 순서 정렬하기
+  // 이름 알파벳 순으로 데이터 순서 정렬하기
+  // 모든 레스토랑을 둘씩 비교해 1, -1 값 부여
   storedRestaurants.sort(function(resA, resB) {
     // 두 개의 레스토랑 이름을 비교해
     // a가 더 길다면 1, 아니라면 -1값을 반환 - 이걸로 순서를 바꾼다
-    if (resA.name > resB.name) {
+    if (
+      (order === 'asc' && resA.name > resB.name) || 
+      (order === 'desc' && resB.name > resA.name)
+    ) {
       return 1
     }
     return -1
@@ -18,7 +33,8 @@ router.get('/restaurants', function(req, res) {
 
   res.render('restaurants', { 
     numberOfRestaurants: storedRestaurants.length, 
-    restaurants: storedRestaurants 
+    restaurants: storedRestaurants,
+    nextOrder: nextOrder
   });
 });
 
